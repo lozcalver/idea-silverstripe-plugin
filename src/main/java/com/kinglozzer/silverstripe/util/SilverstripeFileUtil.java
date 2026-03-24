@@ -9,7 +9,6 @@ import com.kinglozzer.silverstripe.psi.SilverstripePsiFile;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import static com.intellij.psi.search.GlobalSearchScope.allScope;
@@ -64,7 +63,7 @@ public class SilverstripeFileUtil {
             if (file.getUrl().contains("/templates/")) {
                 SilverstripePsiFile template = (SilverstripePsiFile) PsiManager.getInstance(project).findFile(file);
                 if (template != null) {
-                    Collections.addAll(result, template);
+                    result.add(template);
                 }
             }
         }
