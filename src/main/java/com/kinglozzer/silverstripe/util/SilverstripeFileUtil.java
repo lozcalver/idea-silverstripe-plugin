@@ -4,6 +4,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.FileTypeIndex;
+import com.intellij.psi.util.CachedValueProvider;
+import com.intellij.psi.util.CachedValuesManager;
 import com.kinglozzer.silverstripe.SilverstripeFileType;
 import com.kinglozzer.silverstripe.psi.SilverstripePsiFile;
 
@@ -14,9 +16,6 @@ import java.util.List;
 import static com.intellij.psi.search.GlobalSearchScope.allScope;
 
 public class SilverstripeFileUtil {
-    /**
-     * todo - this should really be cached somewhere instead of querying the virtual filesystem every time
-     */
     public static List<SilverstripePsiFile> findIncludeTemplate(Project project, String key) {
         List<SilverstripePsiFile> result = new ArrayList<>();
         if (key.equals("")) {
@@ -57,6 +56,15 @@ public class SilverstripeFileUtil {
     }
 
     public static List<SilverstripePsiFile> findValidTemplates(Project project) {
+        return CachedValuesManager.getManager(project).getCachedValue(project, () ->
+            CachedValueProvider.Result.create(
+                computeValidTemplates(project),
+                PsiManager.getInstance(project).getModificationTracker()
+            )
+        );
+    }
+
+    private static List<SilverstripePsiFile> computeValidTemplates(Project project) {
         final List<SilverstripePsiFile> result = new ArrayList<>();
         final Collection<VirtualFile> files = FileTypeIndex.getFiles(SilverstripeFileType.INSTANCE, allScope(project));
         for (VirtualFile file : files) {
