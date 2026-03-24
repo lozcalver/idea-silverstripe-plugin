@@ -3,4 +3,5 @@
 /build
 /.gradle
 /.sandbox
+/.intellijPlatform
 *.java~
