@@ -33,13 +33,13 @@ public class SilverstripeFileUtil {
             }
 
             String templatePath = templatePathFragments[1];
-            // In SS4, we have to make sure the entire path matches. In SS3, just the file name matching is enough
+            // In SS4+, we have to make sure the entire path matches. In SS3, just the file name matching is enough
             // Special case - "Includes" directory at any level
             if (SilverstripeVersionUtil.isSilverstripe4OrMore(project)) {
                 if (templatePath.equals(key)) {
                     result.add(file);
                 } else {
-                    // In SS4, <% include Foo %> should still match "templates/Includes/Foo.ss" without including
+                    // In SS4+, <% include Foo %> should still match "templates/Includes/Foo.ss" without including
                     // the full path - so we manually inject "Includes/" and check again
                     int lastSlash = key.lastIndexOf("/");
                     String includeKey = key.substring(0, lastSlash) + "/Includes/" + key.substring(lastSlash + 1);
