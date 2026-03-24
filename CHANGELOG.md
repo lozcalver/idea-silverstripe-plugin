@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 ### Added
+- Added surround-with live template for translations (`<%t Key 'Text' %>`)
 
 ### Changed
 
