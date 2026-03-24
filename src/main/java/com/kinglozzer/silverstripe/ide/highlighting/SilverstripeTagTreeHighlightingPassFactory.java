@@ -7,8 +7,6 @@ import com.intellij.psi.PsiFile;
 import com.kinglozzer.silverstripe.psi.SilverstripePsiFile;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.logging.Logger;
-
 public class SilverstripeTagTreeHighlightingPassFactory implements TextEditorHighlightingPassFactory, TextEditorHighlightingPassFactoryRegistrar {
     @Override
     public void registerHighlightingPassFactory(@NotNull TextEditorHighlightingPassRegistrar registrar, @NotNull Project project) {
