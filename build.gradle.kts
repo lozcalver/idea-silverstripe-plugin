@@ -1,9 +1,10 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.jetbrains.changelog.Changelog
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "1.15.0"
+    id("org.jetbrains.intellij.platform") version "2.13.1"
     id("org.jetbrains.changelog") version "2.1.2"
 }
 
@@ -18,21 +19,23 @@ sourceSets {
 
 repositories {
     mavenCentral()
-}
-
-intellij {
-    version.set("2022.3")
-}
-
-tasks {
-    test {
-        testLogging {
-            exceptionFormat = TestExceptionFormat.FULL
-        }
+    intellijPlatform {
+        defaultRepositories()
     }
+}
 
-    patchPluginXml {
-        untilBuild.set("")
+dependencies {
+    intellijPlatform {
+        intellijIdeaCommunity("2024.3")
+        testFramework(TestFrameworkType.Platform)
+    }
+}
+
+intellijPlatform {
+    pluginConfiguration {
+        ideaVersion {
+            untilBuild.set(provider { null })
+        }
 
         changeNotes.set(provider {
             changelog.renderItem(
@@ -43,6 +46,14 @@ tasks {
                 Changelog.OutputType.HTML
             )
         })
+    }
+}
+
+tasks {
+    test {
+        testLogging {
+            exceptionFormat = TestExceptionFormat.FULL
+        }
     }
 }
 
