@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "com.kinglozzer"
-version = "1.0.4"
+version = "1.1.0"
 
 sourceSets {
     main {
@@ -59,7 +59,7 @@ tasks {
 }
 
 changelog {
-    version.set("1.0.4")
+    version.set("1.1.0")
     path.set(file("CHANGELOG.md").canonicalPath)
     header.set(provider { "${version.get()}" })
     itemPrefix.set("-")

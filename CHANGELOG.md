@@ -12,6 +12,15 @@
 
 ### Fixed
 
+## 1.1.0
+
+### Changed
+- Updated plugin build tooling
+- Improved Silverstripe version support detection
+
+### Fixed
+- Rare exception when PhpStorm attempted to read Silverstripe files mid-index
+
 ## 1.0.4
 
 ### Changed
