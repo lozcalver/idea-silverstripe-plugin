@@ -1,7 +1,6 @@
 package com.kinglozzer.silverstripe.util;
 
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.FileTypeIndex;
@@ -60,7 +59,7 @@ public class SilverstripeFileUtil {
         return CachedValuesManager.getManager(project).getCachedValue(project, () ->
             CachedValueProvider.Result.create(
                 computeValidTemplates(project),
-                ProjectRootManager.getInstance(project)
+                PsiManager.getInstance(project).getModificationTracker()
             )
         );
     }
