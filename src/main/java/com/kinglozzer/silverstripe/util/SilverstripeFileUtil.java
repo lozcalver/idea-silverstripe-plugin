@@ -72,6 +72,7 @@ public class SilverstripeFileUtil {
                 var psiFile = PsiManager.getInstance(project).findFile(file);
                 if (psiFile instanceof SilverstripePsiFile template) {
                     result.add(template);
+                }
             }
         }
 
