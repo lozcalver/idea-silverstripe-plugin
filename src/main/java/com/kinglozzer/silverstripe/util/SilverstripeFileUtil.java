@@ -69,10 +69,9 @@ public class SilverstripeFileUtil {
         final Collection<VirtualFile> files = FileTypeIndex.getFiles(SilverstripeFileType.INSTANCE, allScope(project));
         for (VirtualFile file : files) {
             if (file.getUrl().contains("/templates/")) {
-                SilverstripePsiFile template = (SilverstripePsiFile) PsiManager.getInstance(project).findFile(file);
-                if (template != null) {
+                var psiFile = PsiManager.getInstance(project).findFile(file);
+                if (psiFile instanceof SilverstripePsiFile template) {
                     result.add(template);
-                }
             }
         }
 
