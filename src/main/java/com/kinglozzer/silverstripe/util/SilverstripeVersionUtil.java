@@ -57,10 +57,10 @@ public final class SilverstripeVersionUtil {
 
     @NotNull
     private static String computeSilverstripeVersion(@NotNull Project project) {
-        // Preferred: read the major version from composer.json
-        String versionFromComposer = detectVersionFromComposer(project);
-        if (versionFromComposer != null) {
-            return versionFromComposer;
+        // Preferred: read the resolved version from composer.lock
+        String versionFromLock = detectVersionFromComposerLock(project);
+        if (versionFromLock != null) {
+            return versionFromLock;
         }
 
         // Fallback: presence of vendor/silverstripe/framework indicates SS4+
@@ -83,23 +83,34 @@ public final class SilverstripeVersionUtil {
     }
 
     /**
-     * Reads the major version of silverstripe/framework from the project's composer.json.
-     * Returns null if no composer.json is found or it does not declare silverstripe/framework.
+     * Reads the resolved major version of silverstripe/framework from composer.lock.
+     * The lock file contains exact installed versions (e.g. "5.2.3") rather than constraints,
+     * so no constraint-parsing is needed. Returns null if no usable lock file is found.
      */
     @Nullable
-    private static String detectVersionFromComposer(@NotNull Project project) {
-        Pattern pattern = Pattern.compile("\"silverstripe/framework\"\\s*:\\s*\"[^0-9]*([0-9]+)");
+    private static String detectVersionFromComposerLock(@NotNull Project project) {
+        // "version" always immediately follows "name" in each composer.lock package block,
+        // so we locate the exact package entry and extract the version from that window only.
+        Pattern versionPattern = Pattern.compile("\"version\":\\s*\"([0-9]+)");
 
-        Collection<VirtualFile> candidates = FilenameIndex.getVirtualFilesByName("composer.json", allScope(project));
+        Collection<VirtualFile> candidates = FilenameIndex.getVirtualFilesByName("composer.lock", allScope(project));
         for (VirtualFile candidate : candidates) {
-            // Skip composer.json files inside vendor/ — only inspect project-root ones
             if (candidate.getUrl().contains("/vendor/")) {
                 continue;
             }
 
             try {
                 String content = new String(candidate.contentsToByteArray(), StandardCharsets.UTF_8);
-                Matcher matcher = pattern.matcher(content);
+
+                // Find the exact package entry — closing quote prevents matching e.g. framework-cms
+                int nameIndex = content.indexOf("\"name\": \"silverstripe/framework\"");
+                if (nameIndex == -1) {
+                    continue;
+                }
+
+                // "version" is the next field after "name" in composer.lock; 200 chars is ample
+                String window = content.substring(nameIndex, Math.min(nameIndex + 200, content.length()));
+                Matcher matcher = versionPattern.matcher(window);
                 if (matcher.find()) {
                     return matcher.group(1);
                 }
