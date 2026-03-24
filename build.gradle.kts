@@ -28,8 +28,8 @@ dependencies {
     intellijPlatform {
         intellijIdeaCommunity("2024.3")
         testFramework(TestFrameworkType.Platform)
-        testFramework(TestFrameworkType.JUnit3)
     }
+    testImplementation("junit:junit:4.13.2")
 }
 
 intellijPlatform {
