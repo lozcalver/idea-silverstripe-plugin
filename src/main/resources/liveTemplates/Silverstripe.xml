@@ -94,4 +94,11 @@
             <option name="Silverstripe" value="true" />
         </context>
     </template>
+    <template name="t" value="&#60;&#37;t $translationKey$ &#39;$SELECTION$&#39; &#37;&#62;" description="Surround with translation" toReformat="false" toShortenFQNames="true">
+        <variable name="translationKey" expression="" defaultValue="" alwaysStopAt="true" />
+        <context>
+            <option name="Silverstripe" value="true" />
+            <option name="SilverstripeHTML" value="true" />
+        </context>
+    </template>
 </templateSet>
