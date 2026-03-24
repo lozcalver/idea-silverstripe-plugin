@@ -19,9 +19,12 @@ import java.util.regex.Pattern;
 import static com.intellij.psi.search.GlobalSearchScope.allScope;
 
 public final class SilverstripeVersionUtil {
+    public static final String SILVERSTRIPE_VERSION_3 = "3";
     public static final String SILVERSTRIPE_VERSION_4 = "4";
     public static final String SILVERSTRIPE_VERSION_5 = "5";
     public static final String SILVERSTRIPE_VERSION_6 = "6";
+
+    private static final Pattern COMPOSER_LOCK_VERSION_PATTERN = Pattern.compile("\"version\":\\s*\"([0-9]+)");
 
     @NotNull
     public static String getSilverstripeVersion(@NotNull Project project) {
@@ -74,12 +77,12 @@ public final class SilverstripeVersionUtil {
             if (parent != null && parent.isDirectory() && parent.getName().equals("silverstripe")) {
                 parent = parent.getParent();
                 if (parent != null && parent.isDirectory() && parent.getName().equals("vendor")) {
-                    return "4";
+                    return SILVERSTRIPE_VERSION_4;
                 }
             }
         }
 
-        return "3";
+        return SILVERSTRIPE_VERSION_3;
     }
 
     /**
@@ -89,10 +92,6 @@ public final class SilverstripeVersionUtil {
      */
     @Nullable
     private static String detectVersionFromComposerLock(@NotNull Project project) {
-        // "version" always immediately follows "name" in each composer.lock package block,
-        // so we locate the exact package entry and extract the version from that window only.
-        Pattern versionPattern = Pattern.compile("\"version\":\\s*\"([0-9]+)");
-
         Collection<VirtualFile> candidates = FilenameIndex.getVirtualFilesByName("composer.lock", allScope(project));
         for (VirtualFile candidate : candidates) {
             if (candidate.getUrl().contains("/vendor/")) {
@@ -110,7 +109,7 @@ public final class SilverstripeVersionUtil {
 
                 // "version" is the next field after "name" in composer.lock; 200 chars is ample
                 String window = content.substring(nameIndex, Math.min(nameIndex + 200, content.length()));
-                Matcher matcher = versionPattern.matcher(window);
+                Matcher matcher = COMPOSER_LOCK_VERSION_PATTERN.matcher(window);
                 if (matcher.find()) {
                     return matcher.group(1);
                 }
