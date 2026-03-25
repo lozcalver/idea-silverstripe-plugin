@@ -12,6 +12,11 @@
 
 ### Fixed
 
+## 1.1.1
+
+### Fixed
+- Fixed live templates/surrounds
+
 ## 1.1.0
 
 ### Changed

@@ -87,8 +87,8 @@
         <editorHighlighterProvider filetype="Silverstripe" implementationClass="com.kinglozzer.silverstripe.ide.highlighting.SilverstripeEditorHighlighterProvider"/>
         <colorSettingsPage implementation="com.kinglozzer.silverstripe.ide.highlighting.SilverstripeColorSettingsPage"/>
 
-        <liveTemplateContext contextId="SILVERSTRIPE" implementation="com.kinglozzer.silverstripe.ide.templates.SilverstripeContextType"/>
-        <liveTemplateContext contextId="SILVERSTRIPE_HTML" implementation="com.kinglozzer.silverstripe.ide.templates.SilverstripeHTMLContextType"/>
+        <liveTemplateContext contextId="Silverstripe" implementation="com.kinglozzer.silverstripe.ide.templates.SilverstripeContextType"/>
+        <liveTemplateContext contextId="Silverstripe HTML" implementation="com.kinglozzer.silverstripe.ide.templates.SilverstripeHTMLContextType"/>
         <defaultLiveTemplates file="liveTemplates/Silverstripe"/>
     </extensions>
 </idea-plugin>

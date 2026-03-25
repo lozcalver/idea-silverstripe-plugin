@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class SilverstripeHTMLContextType extends TemplateContextType {
     protected SilverstripeHTMLContextType() {
-        super("Silverstripe");
+        super("Silverstripe HTML");
     }
 
     @Override
